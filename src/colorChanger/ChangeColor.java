@@ -48,7 +48,12 @@ public class ChangeColor {
             redChanger();
             System.out.println("color changed to red!");
         }
-        if (!(isGray) && !(isNegative) && !(isRed)) {
+        boolean isBlue = color.equals("blue") || color.equals("BLUE") || color.equals("Blue");
+        if (isBlue) {
+            blueChanger();
+            System.out.println("color changed to blue!");
+        }
+        if (!(isGray) && !(isNegative) && !(isRed) && !(isBlue)) {
             System.err.println("This color is not defined!");
         }
     }
@@ -115,6 +120,23 @@ public class ChangeColor {
                 int green = 0;
                 int blue = 0;
                 pos = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                image.setRGB(i, j, pos);
+            }
+        }
+        generateImage(image);
+    }
+
+    private void blueChanger() throws IOException {
+        int width = getWidth();
+        int height = getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pos = image.getRGB(i, j);
+                int alpha = (pos >> 24) & 0xff;
+                int red = 0;
+                int green = 0;
+                int blue = pos & 0xff;
+                pos = (alpha << 24 | red << 16 | green << 8 | blue);
                 image.setRGB(i, j, pos);
             }
         }
