@@ -15,6 +15,7 @@ public class ChangeColor {
 
     /**
      * constructor
+     *
      * @param imageFile File that represent the picture
      * @param outPath   path of the produced picture
      **/
@@ -26,6 +27,7 @@ public class ChangeColor {
 
     /**
      * setColor method
+     *
      * @param color color of the new picture
      * @throws IOException throw exception if something wrong happens
      **/
