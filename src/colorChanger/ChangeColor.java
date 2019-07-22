@@ -53,7 +53,12 @@ public class ChangeColor {
             blueChanger();
             System.out.println("color changed to blue!");
         }
-        if (!(isGray) && !(isNegative) && !(isRed) && !(isBlue)) {
+        boolean isGreen = color.equals("green") || color.equals("GREEN") || color.equals("Green");
+        if (isGreen) {
+            greenChanger();
+            System.out.println("color changed to green!");
+        }
+        if (!(isGray) && !(isNegative) && !(isRed) && !(isBlue) && !(isGreen)) {
             System.err.println("This color is not defined!");
         }
     }
@@ -136,6 +141,23 @@ public class ChangeColor {
                 int red = 0;
                 int green = 0;
                 int blue = pos & 0xff;
+                pos = (alpha << 24 | red << 16 | green << 8 | blue);
+                image.setRGB(i, j, pos);
+            }
+        }
+        generateImage(image);
+    }
+
+    private void greenChanger() throws IOException {
+        int width = getWidth();
+        int height = getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pos = image.getRGB(i, j);
+                int alpha = (pos >> 24) & 0xff;
+                int red = 0;
+                int green = (pos >> 8) & 0xff;
+                int blue = 0;
                 pos = (alpha << 24 | red << 16 | green << 8 | blue);
                 image.setRGB(i, j, pos);
             }
