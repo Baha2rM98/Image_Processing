@@ -1,4 +1,4 @@
-package colorChanger;
+package imageProcessing.colorChanger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

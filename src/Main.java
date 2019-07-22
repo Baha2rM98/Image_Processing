@@ -1,6 +1,3 @@
-import colorChanger.ChangeColor;
-
-import java.io.File;
 import java.io.IOException;
 
 public class Main {
