@@ -15,7 +15,6 @@ public class ChangeColor {
 
     /**
      * constructor
-     *
      * @param imageFile File that represent the picture
      * @param outPath   path of the produced picture
      **/
@@ -27,7 +26,6 @@ public class ChangeColor {
 
     /**
      * setColor method
-     *
      * @param color color of the new picture
      * @throws IOException throw exception if something wrong happens
      **/
@@ -58,7 +56,12 @@ public class ChangeColor {
             greenChanger();
             System.out.println("color changed to green!");
         }
-        if (!(isGray) && !(isNegative) && !(isRed) && !(isBlue) && !(isGreen)) {
+        boolean isSepia = color.equals("sepia") || color.equals("SEPIA") || color.equals("Sepia");
+        if (isSepia) {
+            sepiaChanger();
+            System.out.println("color changed to sepia!");
+        }
+        if (!(isGray) && !(isNegative) && !(isRed) && !(isBlue) && !(isGreen) && !(isSepia)) {
             System.err.println("This color is not defined!");
         }
     }
@@ -158,6 +161,44 @@ public class ChangeColor {
                 int red = 0;
                 int green = (pos >> 8) & 0xff;
                 int blue = 0;
+                pos = (alpha << 24 | red << 16 | green << 8 | blue);
+                image.setRGB(i, j, pos);
+            }
+        }
+        generateImage(image);
+    }
+
+    private void sepiaChanger() throws IOException {
+        int width = getWidth();
+        int height = getHeight();
+        final double const_1 = 0.393;
+        final double const_2 = 0.769;
+        final double const_3 = 0.189;
+        final double const_4 = 0.349;
+        final double const_5 = 0.686;
+        final double const_6 = 0.168;
+        final double const_7 = 0.272;
+        final double const_8 = 0.534;
+        final double const_9 = 0.131;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pos = image.getRGB(i, j);
+                int alpha = (pos >> 24) & 0xff;
+                int red = (pos >> 16) & 0xff;
+                int green = (pos >> 8) & 0xff;
+                int blue = pos & 0xff;
+                int newRed = (int) ((red * const_1) + (green * const_2) + (blue * const_3));
+                int newGreen = (int) ((red * const_4) + (green * const_5) + (blue * const_6));
+                int newBlue = (int) ((red * const_7) + (green * const_8) + (blue * const_9));
+                if (newRed > 255)
+                    red = 255;
+                else red = newRed;
+                if (newGreen > 255)
+                    green = 255;
+                else green = newGreen;
+                if (newBlue > 255)
+                    blue = 255;
+                else blue = newBlue;
                 pos = (alpha << 24 | red << 16 | green << 8 | blue);
                 image.setRGB(i, j, pos);
             }
