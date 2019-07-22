@@ -15,8 +15,9 @@ public class ChangeColor {
 
     /**
      * constructor
+     *
      * @param imageFile File that represent the picture
-     * @param outPath path of the produced picture
+     * @param outPath   path of the produced picture
      **/
 
     public ChangeColor(File imageFile, String outPath) throws IOException {
@@ -25,7 +26,8 @@ public class ChangeColor {
     }
 
     /**
-     * constructor
+     * setColor method
+     *
      * @param color color of the new picture
      * @throws IOException throw exception if something wrong happens
      **/
@@ -41,7 +43,12 @@ public class ChangeColor {
             negativeChanger();
             System.out.println("color changed to negative!");
         }
-        if (!(isGray) && !(isNegative)) {
+        boolean isRed = color.equals("red") || color.equals("RED") || color.equals("Red");
+        if (isRed) {
+            redChanger();
+            System.out.println("color changed to red!");
+        }
+        if (!(isGray) && !(isNegative) && !(isRed)) {
             System.err.println("This color is not defined!");
         }
     }
@@ -90,6 +97,23 @@ public class ChangeColor {
                 red = 255 - red;
                 green = 255 - green;
                 blue = 255 - blue;
+                pos = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                image.setRGB(i, j, pos);
+            }
+        }
+        generateImage(image);
+    }
+
+    private void redChanger() throws IOException {
+        int width = getWidth();
+        int height = getHeight();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pos = image.getRGB(i, j);
+                int alpha = (pos >> 24) & 0xff;
+                int red = (pos >> 16) & 0xff;
+                int green = 0;
+                int blue = 0;
                 pos = (alpha << 24) | (red << 16) | (green << 8) | blue;
                 image.setRGB(i, j, pos);
             }
