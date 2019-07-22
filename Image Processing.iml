@@ -7,17 +7,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Program Files/opencv - 4.1.0/build/java/opencv-410.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://C:/Program Files/opencv - 4.1.0/build/java/opencv-410.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" exported="" name="opencv-410" level="project" />
   </component>
 </module>
