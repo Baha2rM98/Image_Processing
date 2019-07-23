@@ -4,6 +4,9 @@ abstract class CharacterHider {
     private static final byte MUL = -1;
     private static final byte PLUS = 51;
 
+    private CharacterHider() {
+    }
+
     static byte[] show(byte[] bytes) {
         final int size = bytes.length;
         byte[] buf = new byte[size];
