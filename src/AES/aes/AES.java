@@ -14,48 +14,23 @@ import java.util.Base64;
  * @author Baha2r
  **/
 
-public class AES {
+public abstract class AES {
 
     private final String ALGORITHM = "AES/CBC/PKCS5PADDING";
 
     //give to this iv file path
-    private final File ivPath = new File("C:\\Users\\Baha2r\\IdeaProjects\\AES\\src\\assets", "iv");
+    private final File ivPath = new File("C:\\Users\\Baha2r\\IdeaProjects\\Image Processing\\src\\AES\\assets", "iv");
 
     //give to this k file path
-    private final File kPath = new File("C:\\Users\\Baha2r\\IdeaProjects\\AES\\src\\assets", "k");
+    private final File kPath = new File("C:\\Users\\Baha2r\\IdeaProjects\\Image Processing\\src\\AES\\assets", "k");
 
     private SecretKeySpec KEY;
     private IvParameterSpec IV;
 
-
-//    /**
-//     * This constructor is used for generating different Key and ivVector
-//     **/
-//    public AES() {
-//        super();
-//        final int blockSize = 128;
-//        final int n = 16;
-//        SecureRandom keyRand = new SecureRandom();
-//        KeyGenerator generator = null;
-//        try {
-//            generator = KeyGenerator.getInstance("AES");
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
-//        assert generator != null;
-//        generator.init(blockSize, keyRand);
-//        KEY = generator.generateKey();
-//        SecureRandom ivRand = new SecureRandom();
-//        byte[] iv = new byte[n];
-//        ivRand.nextBytes(iv);
-//        IV = new IvParameterSpec(iv);
-//    }
-
-
     /**
      * This constructor is used for preparing Key and ivVector thad are already exist
      **/
-    public AES() throws IOException {
+    protected AES() throws IOException {
         ivPath.setReadOnly();
         kPath.setReadOnly();
         IV = new IvParameterSpec(ivReader().getBytes(StandardCharsets.UTF_8));
@@ -84,24 +59,23 @@ public class AES {
         return new String(buff);
     }
 
-    public String encryption(String plainText) {
+    protected byte[] encryption(byte[] plainText) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, KEY, IV);
-            byte[] encrypted = cipher.doFinal(plainText.getBytes());
-            return Base64.getEncoder().encodeToString(encrypted);
+            byte[] encrypted = cipher.doFinal(plainText);
+            return Base64.getEncoder().encode(encrypted);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String decryption(String cipherText) {
+    protected byte[] decryption(byte[] cipherText) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, KEY, IV);
-            byte[] original = cipher.doFinal(Base64.getDecoder().decode(cipherText));
-            return new String(original);
+            return cipher.doFinal(Base64.getDecoder().decode(cipherText));
         } catch (Exception e) {
             e.printStackTrace();
         }
