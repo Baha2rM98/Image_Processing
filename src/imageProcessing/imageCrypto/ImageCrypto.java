@@ -3,23 +3,36 @@ package imageProcessing.imageCrypto;
 import AES.aes.AES;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
+import java.awt.image.*;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+
+/**
+ * @author Baha2r
+ **/
 
 public class ImageCrypto extends AES {
     private static byte[] imageInBytes;
     private static byte[] enc;
     private static byte[] dec;
+
+    //constructor parameters
     private String outputEncryptedPath;
     private String outputDecryptedPath;
-    private BufferedImage imageFile;
+    //constructor parameters
 
+    private BufferedImage imageFile;
+    private BufferedImage encryptedImageFile;
+
+    /**
+     * constructor
+     *
+     * @param inputImageFile      path of original image file
+     * @param outputEncryptedPath path of encrypted image file
+     * @param outputDecryptedPath path of decrypted image file
+     **/
     public ImageCrypto(String inputImageFile, String outputEncryptedPath, String outputDecryptedPath) throws IOException {
         super();
         this.outputEncryptedPath = outputEncryptedPath;
@@ -28,6 +41,9 @@ public class ImageCrypto extends AES {
         this.imageFile = ImageIO.read(image);
     }
 
+    /**
+     * method to encrypt image file and save in denote path
+     **/
     public void imageEncryption() throws IOException {
         System.out.println("encryption started...");
         originalImageToByteArray();
@@ -36,9 +52,14 @@ public class ImageCrypto extends AES {
         System.out.println("encryption ended...");
     }
 
+    /**
+     * method to decrypt image file and save in denote path
+     **/
     public void imageDecryption() throws IOException {
+        System.out.println("decryption started...");
         dec = decryption(enc);
         decryptedByteArrayToImage();
+        System.out.println("decryption ended...");
     }
 
     private int getHeight() {
@@ -53,6 +74,9 @@ public class ImageCrypto extends AES {
         return imageFile.getType();
     }
 
+    /**
+     * convert image file to byte array
+     **/
     private void originalImageToByteArray() throws IOException {
         ByteArrayOutputStream byteImage = new ByteArrayOutputStream();
         ImageIO.write(imageFile, "jpg", byteImage);
@@ -61,29 +85,29 @@ public class ImageCrypto extends AES {
         byteImage.close();
     }
 
+    /**
+     * convert encrypted byte array to image file
+     **/
     private void encryptedByteArrayToImage() throws IOException {
         File output = new File(outputEncryptedPath);
-        int w = getWidth();
-        int h = getHeight();
+        int w = (int) (getWidth() / 5.7);
+        int h = (int) (getHeight() / 5.7);
         int type = getType();
-        BufferedImage encryptedImageFile = new BufferedImage(w / 10, h / 10, type);
-        encryptedImageFile.setData(Raster.createRaster(encryptedImageFile.getSampleModel(), new DataBufferByte(enc, enc.length), new Point(0, 0)));
+        encryptedImageFile = new BufferedImage(w, h, type);
+        SampleModel sampleModel = encryptedImageFile.getSampleModel().createCompatibleSampleModel(w, h);
+        DataBuffer dataBuffer = new DataBufferByte(enc, enc.length);
+        WritableRaster writableRaster = Raster.createWritableRaster(sampleModel, dataBuffer, null);
+        encryptedImageFile.setData(writableRaster);
         ImageIO.write(encryptedImageFile, "jpg", output);
     }
 
+    /**
+     * convert decrypted byte array to image file
+     **/
     private void decryptedByteArrayToImage() throws IOException {
         File output = new File(outputDecryptedPath);
-        int w = getWidth();
-        int h = getHeight();
-        int type = getType();
-        BufferedImage decryptedImageFile = new BufferedImage(w / 10, h / 10, type);
-        decryptedImageFile.setData(Raster.createRaster(decryptedImageFile.getSampleModel(), new DataBufferByte(dec, dec.length), new Point(0, 0)));
+        ByteArrayInputStream decryptedImageInByte = new ByteArrayInputStream(dec);
+        BufferedImage decryptedImageFile = ImageIO.read(decryptedImageInByte);
         ImageIO.write(decryptedImageFile, "jpg", output);
     }
-
-//    public void show() {
-//        if (Arrays.equals(dec, imageInBytes))
-//            System.out.println(true);
-//        else System.out.println(false);
-//    }
 }
