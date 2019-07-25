@@ -19,10 +19,10 @@ public abstract class AES {
     private final String ALGORITHM = "AES/CBC/PKCS5PADDING";
 
     //give to this iv file path
-    private final File ivPath = new File("C:\\Users\\Baha2r\\IdeaProjects\\Image Processing\\src\\AES\\assets", "iv");
+    private final File ivPath = new File("assets/iv");
 
     //give to this k file path
-    private final File kPath = new File("C:\\Users\\Baha2r\\IdeaProjects\\Image Processing\\src\\AES\\assets", "k");
+    private final File kPath = new File("assets/k");
 
     private SecretKeySpec KEY;
     private IvParameterSpec IV;
