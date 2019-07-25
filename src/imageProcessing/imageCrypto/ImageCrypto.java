@@ -10,12 +10,12 @@ import java.awt.image.Raster;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ImageCrypto extends AES {
     private static byte[] imageInBytes;
     private static byte[] enc;
     private static byte[] dec;
-    private final double DIVIDED_VALUE = 4.05;
     private String outputEncryptedPath;
     private String outputDecryptedPath;
     private BufferedImage imageFile;
@@ -30,26 +30,30 @@ public class ImageCrypto extends AES {
 
     public void imageEncryption() throws IOException {
         System.out.println("encryption started...");
-        originalImage2ByteArray();
+        originalImageToByteArray();
         enc = encryption(imageInBytes);
-        encryptedByteArray2Image();
+        encryptedByteArrayToImage();
         System.out.println("encryption ended...");
     }
 
+    public void imageDecryption() throws IOException {
+        dec = decryption(enc);
+        decryptedByteArrayToImage();
+    }
 
     private int getHeight() {
-        return (int) (imageFile.getHeight() / DIVIDED_VALUE);
+        return imageFile.getHeight();
     }
 
     private int getWidth() {
-        return (int) (imageFile.getWidth() / DIVIDED_VALUE);
+        return imageFile.getWidth();
     }
 
     private int getType() {
         return imageFile.getType();
     }
 
-    private void originalImage2ByteArray() throws IOException {
+    private void originalImageToByteArray() throws IOException {
         ByteArrayOutputStream byteImage = new ByteArrayOutputStream();
         ImageIO.write(imageFile, "jpg", byteImage);
         byteImage.flush();
@@ -57,13 +61,29 @@ public class ImageCrypto extends AES {
         byteImage.close();
     }
 
-    private void encryptedByteArray2Image() throws IOException {
+    private void encryptedByteArrayToImage() throws IOException {
         File output = new File(outputEncryptedPath);
         int w = getWidth();
         int h = getHeight();
         int type = getType();
-        BufferedImage encryptedImage = new BufferedImage(w, h, type);
-        encryptedImage.setData(Raster.createRaster(encryptedImage.getSampleModel(), new DataBufferByte(enc, enc.length), new Point()));
-        ImageIO.write(encryptedImage, "jpg", output);
+        BufferedImage encryptedImageFile = new BufferedImage(w / 10, h / 10, type);
+        encryptedImageFile.setData(Raster.createRaster(encryptedImageFile.getSampleModel(), new DataBufferByte(enc, enc.length), new Point(0, 0)));
+        ImageIO.write(encryptedImageFile, "jpg", output);
     }
+
+    private void decryptedByteArrayToImage() throws IOException {
+        File output = new File(outputDecryptedPath);
+        int w = getWidth();
+        int h = getHeight();
+        int type = getType();
+        BufferedImage decryptedImageFile = new BufferedImage(w / 10, h / 10, type);
+        decryptedImageFile.setData(Raster.createRaster(decryptedImageFile.getSampleModel(), new DataBufferByte(dec, dec.length), new Point(0, 0)));
+        ImageIO.write(decryptedImageFile, "jpg", output);
+    }
+
+//    public void show() {
+//        if (Arrays.equals(dec, imageInBytes))
+//            System.out.println(true);
+//        else System.out.println(false);
+//    }
 }
