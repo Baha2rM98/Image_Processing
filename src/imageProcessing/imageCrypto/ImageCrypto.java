@@ -24,7 +24,6 @@ public class ImageCrypto extends AES {
     //constructor parameters
 
     private BufferedImage imageFile;
-    private BufferedImage encryptedImageFile;
 
     /**
      * constructor
@@ -42,6 +41,18 @@ public class ImageCrypto extends AES {
     }
 
     /**
+     * constructor
+     *
+     * @param inputImageFile path of original image file
+     **/
+    public ImageCrypto(String inputImageFile) throws IOException {
+        super();
+        File image = new File(inputImageFile);
+        this.imageFile = ImageIO.read(image);
+
+    }
+
+    /**
      * method to encrypt image file and save in denote path
      **/
     public void imageEncryption() throws IOException {
@@ -50,6 +61,44 @@ public class ImageCrypto extends AES {
         enc = encryption(imageInBytes);
         encryptedByteArrayToImage();
         System.out.println("encryption ended...");
+    }
+
+
+    /**
+     * method to encrypt image file and save in denote path
+     **/
+    public void imageEncryption(String outputEncryptedPath) throws IOException {
+        System.out.println("encryption started...");
+        ByteArrayOutputStream byteImage = new ByteArrayOutputStream();
+        ImageIO.write(imageFile, "jpg", byteImage);
+        byteImage.flush();
+        byte[] imageInBytes = byteImage.toByteArray();
+        byteImage.close();
+        enc = encryption(imageInBytes);
+        File output = new File(outputEncryptedPath);
+        int w = (int) (getWidth() / 5.7);
+        int h = (int) (getHeight() / 5.7);
+        int type = getType();
+        BufferedImage encryptedImageFile = new BufferedImage(w, h, type);
+        SampleModel sampleModel = encryptedImageFile.getSampleModel().createCompatibleSampleModel(w, h);
+        DataBuffer dataBuffer = new DataBufferByte(enc, enc.length);
+        WritableRaster writableRaster = Raster.createWritableRaster(sampleModel, dataBuffer, null);
+        encryptedImageFile.setData(writableRaster);
+        ImageIO.write(encryptedImageFile, "jpg", output);
+        System.out.println("encryption ended...");
+    }
+
+    /**
+     * method to decrypt image file and save in denote path
+     **/
+    public void imageDecryption(String outputDecryptedPath) throws IOException {
+        System.out.println("decryption started...");
+        dec = decryption(enc);
+        File output = new File(outputDecryptedPath);
+        ByteArrayInputStream decryptedImageInByte = new ByteArrayInputStream(dec);
+        BufferedImage decryptedImageFile = ImageIO.read(decryptedImageInByte);
+        ImageIO.write(decryptedImageFile, "jpg", output);
+        System.out.println("decryption ended...");
     }
 
     /**
@@ -93,7 +142,7 @@ public class ImageCrypto extends AES {
         int w = (int) (getWidth() / 5.7);
         int h = (int) (getHeight() / 5.7);
         int type = getType();
-        encryptedImageFile = new BufferedImage(w, h, type);
+        BufferedImage encryptedImageFile = new BufferedImage(w, h, type);
         SampleModel sampleModel = encryptedImageFile.getSampleModel().createCompatibleSampleModel(w, h);
         DataBuffer dataBuffer = new DataBufferByte(enc, enc.length);
         WritableRaster writableRaster = Raster.createWritableRaster(sampleModel, dataBuffer, null);
