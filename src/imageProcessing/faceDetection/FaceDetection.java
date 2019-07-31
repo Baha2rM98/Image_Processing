@@ -6,11 +6,14 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 public class FaceDetection {
+    private String imageInputPath, imageOutPath;
 
-    public FaceDetection() {
+    public FaceDetection(String imageInputPath, String imageOutPath) {
+        this.imageInputPath = imageInputPath;
+        this.imageOutPath = imageOutPath;
     }
 
-    public void faceDetector(String imageInputPath, String imageOutPath) {
+    public void faceDetector() {
         try {
             loadLibrary();
             CascadeClassifier detector = new CascadeClassifier();

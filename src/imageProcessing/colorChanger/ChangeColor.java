@@ -13,6 +13,7 @@ import java.io.IOException;
 public class ChangeColor {
     private BufferedImage image;
     private String outPath;
+    private String color;
 
     /**
      * constructor
@@ -21,20 +22,20 @@ public class ChangeColor {
      * @param outPath   path of the produced picture
      **/
 
-    public ChangeColor(String imageFile, String outPath) throws IOException {
+    public ChangeColor(String imageFile, String outPath, String color) throws IOException {
         File file = new File(imageFile);
         this.image = ImageIO.read(file);
         this.outPath = outPath;
+        this.color = color;
     }
 
     /**
      * setColor method
      *
-     * @param color color of the new picture
      * @throws IOException throw exception if something wrong happens
      **/
 
-    public void setColor(String color) throws IOException {
+    public void setColor() throws IOException {
         boolean isGray = color.equals("gray") || color.equals("GRAY") || color.equals("Gray");
         if (isGray) {
             grayChanger();
