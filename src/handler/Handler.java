@@ -64,7 +64,7 @@ public abstract class Handler {
         imageCrypto.imageEncryption();
     }
 
-   public static void imageDecryption() throws IOException {
+    public static void imageDecryption() throws IOException {
         System.out.println("notice: you have to call image encryption first to avoid exceptions");
         initCrypto();
         imageCrypto.imageDecryption();
