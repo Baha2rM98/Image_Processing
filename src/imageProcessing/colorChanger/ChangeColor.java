@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * @author Baha2r
  * A class to change color of a picture
  **/
 
