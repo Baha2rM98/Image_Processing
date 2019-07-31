@@ -19,7 +19,7 @@ public abstract class Handler {
     }
 
     private static void initChangeColor() throws IOException {
-        System.out.println("enter paths and roots with double slash(//) and suffix(.txt, .jpg, ...)");
+        System.out.println("enter paths and roots with double slash(\\\\) and suffix(.txt, .jpg, ...)");
         System.out.println("enter path of source image:");
         imageFile = scanner.nextLine();
         System.out.println("enter path of output image:");
@@ -30,7 +30,7 @@ public abstract class Handler {
     }
 
     private static void initFaceDetection() {
-        System.out.println("enter paths and roots with double slash(//) and suffix(.txt, .jpg, ...)");
+        System.out.println("enter paths and roots with double slash(\\\\) and suffix(.txt, .jpg, ...)");
         System.out.println("enter path of source image:");
         String imageInput = scanner.nextLine();
         System.out.println("enter path of face detected image:");
@@ -39,7 +39,7 @@ public abstract class Handler {
     }
 
     private static void initCrypto() throws IOException {
-        System.out.println("enter paths and roots with double slash(//) and suffix(.txt, .jpg, ...)");
+        System.out.println("enter paths and roots with double slash(\\\\) and suffix(.txt, .jpg, ...)");
         System.out.println("enter path of source image:");
         imageFile = scanner.nextLine();
         System.out.println("enter path of encrypted image");
@@ -66,7 +66,6 @@ public abstract class Handler {
 
     public static void imageDecryption() throws IOException {
         System.out.println("notice: you have to call image encryption first to avoid exceptions");
-        initCrypto();
         imageCrypto.imageDecryption();
     }
 }
