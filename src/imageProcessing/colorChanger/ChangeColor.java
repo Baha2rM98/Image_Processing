@@ -21,8 +21,9 @@ public class ChangeColor {
      * @param outPath   path of the produced picture
      **/
 
-    public ChangeColor(File imageFile, String outPath) throws IOException {
-        this.image = ImageIO.read(imageFile);
+    public ChangeColor(String imageFile, String outPath) throws IOException {
+        File file = new File(imageFile);
+        this.image = ImageIO.read(file);
         this.outPath = outPath;
     }
 
